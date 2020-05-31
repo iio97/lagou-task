@@ -1,0 +1,40 @@
+server:
+  port: 8043
+spring:
+  application:
+    name: lagou-service-code
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lagou?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    database: MySQL
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  #避免将驼峰命名转换为下划线命名
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #所有的接口
+  # 暴露健康接口的细节
+  endpoint:
+    health:
+      show-details: always
+
+
+#注册到eureka服务中心
+eureka:
+  client:
+    service-url: #eureka server的路径
+      #把 eureka 集群中的所有 url 都填写了进来，也可以只写⼀台，因为各个eureka service 可以同步注册表
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+  instance:
+    prefer-ip-address: true #服务实例显示IP  -- 不显示LagouCloudEurekaServerA
+    instance-id: ${spring.cloud.client.ipaddress}:${spring.application.name}:${server.port}:@project.version@  #localhost:lagou-cloud-eureka-service:8761
+    metadata-map:
+      cluster: cl1
+      region: rn1

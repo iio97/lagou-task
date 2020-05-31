@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    config:
+      name: lagou-service-code-dev
+      profile: dev
+      label: master
+      uri: http://localhost:9006
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+
+#注册到eureka服务中心
+eureka:
+  client:
+    service-url: #eureka server的路径
+      #把 eureka 集群中的所有 url 都填写了进来，也可以只写⼀台，因为各个eureka service 可以同步注册表
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+  instance:
+    prefer-ip-address: true #服务实例显示IP  -- 不显示LagouCloudEurekaServerA
+    instance-id: ${spring.cloud.client.ipaddress}:${spring.application.name}:${server.port}  #localhost:lagou-cloud-eureka-service:8761
+    metadata-map:
+      cluster: cl1
+      region: rn1

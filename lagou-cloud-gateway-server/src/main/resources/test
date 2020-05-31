@@ -1,0 +1,60 @@
+server:
+  port: 9002
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #所有的接口
+  # 暴露健康接口的细节
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: lagou-cloud-gateway-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lagou?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    database: MySQL
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl  #避免将驼峰命名转换为下划线命名
+  cloud:
+    gateway:
+      routes:                                # 路由可以有多个
+        - id: path_route_user                # 我们自定义的路由 ID，保持唯一
+          uri: lb://lagou-service-user       # 目标服务地址
+          predicates:                        # 断言
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=1                  #相对于去掉user
+
+
+        - id: path_route_email                # 我们自定义的路由 ID，保持唯一
+          uri: lb://lagou-service-email       # 目标服务地址
+          predicates:                         # 断言
+            - Path=/api/email/**
+          filters:
+            - StripPrefix=1
+
+
+        - id: path_route_code                 # 我们自定义的路由 ID，保持唯一
+          uri: lb://lagou-service-code        # 目标服务地址
+          predicates:                         # 断言
+            - Path=/api/code/**
+          filters:
+            - StripPrefix=1
