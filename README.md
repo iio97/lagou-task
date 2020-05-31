@@ -9,7 +9,7 @@ nginx配置文件：nginx.conf
 
 ### 1.用户访问到登录面，在登录⻚页⾯面中有注册新账号功能
 
-![](https://github.com/iio97/lagou-task/tree/master/pic/001.png)
+![image](https://github.com/iio97/lagou-task/tree/master/pic/001.png)
 
 ### 2.在注册面，需要⽤户输⼊入邮箱地址、密码、确认密码，然后点击”获取验证码“，系统会⽣生成验证码并向所输⼊入的邮箱地址发送该验证码，⽤用户拿到邮箱中的验证码输⼊入后完成注册
 
